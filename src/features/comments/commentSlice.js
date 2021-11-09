@@ -23,6 +23,18 @@ export const deleteComments = createAsyncThunk(
   }
 );
 
+export const patchComments = createAsyncThunk(
+  "comments/patchComments",
+  async ({ id, newObj }) => {
+    await fetch(`https://jsonplaceholder.typicode.com/comments/${id}`, {
+      method: "PATCH",
+      body: JSON.stringify(newObj),
+    });
+
+    return { id, changes: newObj };
+  }
+);
+
 const commentsAdapter = createEntityAdapter({
   selectId: (comment) => comment.id,
 });
@@ -59,8 +71,22 @@ const commentSlice = createSlice({
       state.error = true;
     },
     [deleteComments.fulfilled](state, { payload: id }) {
-      state.loading = true;
+      state.loading = false;
       commentsAdapter.removeOne(state, id);
+    },
+    [patchComments.pending](state) {
+      state.loading = true;
+    },
+    [patchComments.rejected](state) {
+      state.loading = false;
+      state.error = true;
+    },
+    [patchComments.fulfilled](state, { payload }) {
+      state.loading = false;
+      commentsAdapter.updateOne(state, {
+        id: payload.id,
+        changes: payload.changes,
+      });
     },
   },
 });

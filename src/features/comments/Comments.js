@@ -2,6 +2,7 @@ import {
   commentSelectors,
   fetchComments,
   deleteComments,
+  patchComments,
 } from "./commentSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { useCallback, useEffect } from "react";
@@ -16,13 +17,24 @@ const Comments = () => {
   //   );
 
   const onDelete = useCallback((id) => dispatch(deleteComments(id)), []);
+  const onPatch = useCallback(
+    (id, newObj) => dispatch(patchComments({ id, newObj })),
+    []
+  );
 
   useEffect(() => {
     dispatch(fetchComments());
   }, []);
 
-  return allComments.map((comment) => (
-    <Comment key={comment.id} comment={comment} onDelete={onDelete} />
+  return allComments.map(({ id, body, name }) => (
+    <Comment
+      key={id}
+      id={id}
+      body={body}
+      name={name}
+      onDelete={onDelete}
+      onPatch={onPatch}
+    />
   ));
 };
 
