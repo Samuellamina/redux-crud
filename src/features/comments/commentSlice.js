@@ -35,7 +35,10 @@ const initialState = commentsAdapter.getInitialState({
 const commentSlice = createSlice({
   name: "comments",
   initialState,
-  reducers: {},
+  reducers: {
+    //   getAllComments: commentsAdapter.setAll,
+    //   deleteOneComment: commentsAdapter.removeOne
+  },
   extraReducers: {
     [fetchComments.pending](state) {
       state.loading = true;
