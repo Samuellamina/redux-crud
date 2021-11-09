@@ -1,4 +1,5 @@
 import PropTypes from "prop-types";
+import { memo } from "react";
 import { Panel } from "rsuite";
 import Button from "rsuite/Button";
 
@@ -27,7 +28,8 @@ const Comment = ({ comment, onDelete }) => {
 };
 
 Comment.propTypes = {
+  onDelete: PropTypes.func.isRequired,
   comment: PropTypes.object.isRequired,
 };
 
-export default Comment;
+export default memo(Comment);
