@@ -1,17 +1,12 @@
 import PropTypes from "prop-types";
-import { Panel, PanelGroup } from "rsuite";
+import { Panel } from "rsuite";
 import Button from "rsuite/Button";
 
-const Comment = ({ comment }) => {
+const Comment = ({ comment, onDelete }) => {
   return (
-    <Panel header={comment.name} shaded style={{ margin: 20 }}>
+    <Panel header={<h1>{comment.id}</h1>} shaded style={{ margin: 20 }}>
       {comment.body}
       <p></p>
-      <Button
-        style={{ marginTop: 20, marginRight: 20, backgroundColor: "red" }}
-      >
-        Delete
-      </Button>
       <Button
         style={{
           marginTop: 20,
@@ -20,6 +15,12 @@ const Comment = ({ comment }) => {
         }}
       >
         Update
+      </Button>
+      <Button
+        onClick={() => onDelete(comment.id)}
+        style={{ marginTop: 20, marginRight: 20, backgroundColor: "red" }}
+      >
+        Delete
       </Button>
     </Panel>
   );

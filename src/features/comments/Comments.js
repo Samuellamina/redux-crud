@@ -1,25 +1,28 @@
-import { commentSelectors, fetchComments } from "./commentSlice";
+import {
+  commentSelectors,
+  fetchComments,
+  deleteComments,
+} from "./commentSlice";
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
 import Comment from "./components/Comment";
 
 const Comments = () => {
   const dispatch = useDispatch();
-
-  const total = useSelector(commentSelectors.selectTotal);
   const allComments = useSelector(commentSelectors.selectAll);
+  // const total = useSelector(commentSelectors.selectTotal);
   //   const singleComment = useSelector((state) =>
   //     commentSelectors.selectById(state, 5)
   //   );
 
-  console.log({ total, allComments });
+  const onDelete = useCallback((id) => dispatch(deleteComments(id)), []);
 
   useEffect(() => {
     dispatch(fetchComments());
   }, []);
 
   return allComments.map((comment) => (
-    <Comment key={comment.id} comment={comment} />
+    <Comment key={comment.id} comment={comment} onDelete={onDelete} />
   ));
 };
 
