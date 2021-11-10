@@ -3,17 +3,9 @@ import { memo } from "react";
 import { Panel } from "rsuite";
 import Button from "rsuite/Button";
 
-const Comment = ({ id, body, name, onDelete, onPatch }) => {
+const Comment = ({ id, body, onDelete, onPatch }) => {
   return (
-    <Panel
-      header={
-        <h1>
-          {id}...{name}
-        </h1>
-      }
-      shaded
-      style={{ margin: 20 }}
-    >
+    <Panel header={<h1>{id}</h1>} shaded style={{ margin: 20 }}>
       {body}
       <p></p>
       <Button
@@ -38,8 +30,7 @@ const Comment = ({ id, body, name, onDelete, onPatch }) => {
 
 Comment.propTypes = {
   onDelete: PropTypes.func.isRequired,
-  id: PropTypes.number.isRequired,
-  name: PropTypes.string.isRequired,
+  id: PropTypes.string.isRequired,
   body: PropTypes.string.isRequired,
   onPatch: PropTypes.func.isRequired,
 };

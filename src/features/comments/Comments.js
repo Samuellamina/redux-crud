@@ -26,12 +26,11 @@ const Comments = () => {
     dispatch(fetchComments());
   }, []);
 
-  return allComments.map(({ id, body, name }) => (
+  return allComments.map(({ id, body }) => (
     <Comment
       key={id}
       id={id}
       body={body}
-      name={name}
       onDelete={onDelete}
       onPatch={onPatch}
     />
