@@ -10,10 +10,14 @@ export const fetchComments = createAsyncThunk(
     const data = await fetch(`http://localhost:4000/comments`).then((res) =>
       res.json()
     );
-
     const tags = data.reduce((prev, curr) => [...prev, curr.tags], []).flat();
     const likes = data.reduce((prev, curr) => [...prev, curr.likes], []).flat();
-    const comments = data.map(({ id, body }) => ({ id, body }));
+    const comments = data.map(({ id, body, likes, tags }) => ({
+      id,
+      body,
+      likesId: likes.map((like) => like.id),
+      tagsId: tags.map((tag) => tag.id),
+    }));
 
     return { comments, tags, likes };
   }
@@ -63,6 +67,7 @@ const initialState = commentsAdapter.getInitialState({
 const commentSlice = createSlice({
   name: "comments",
   initialState,
+
   reducers: {
     // setAllComments: commentsAdapter.setAll,
     // setOneComments: commentsAdapter.removeOne,
@@ -88,6 +93,7 @@ const commentSlice = createSlice({
     //   tagsAdapter.removeOne(state.tags, tagId);
     // },
   },
+
   extraReducers: {
     [fetchComments.pending](state) {
       state.loading = true;
