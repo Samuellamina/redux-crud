@@ -14,6 +14,7 @@ export const fetchComments = createAsyncThunk(
     const tags = data.reduce((prev, curr) => [...prev, curr.tags], []).flat();
     const likes = data.reduce((prev, curr) => [...prev, curr.likes], []).flat();
     const comments = data.map(({ id, body }) => ({ id, body }));
+
     return { comments, tags, likes };
   }
 );
@@ -62,7 +63,31 @@ const initialState = commentsAdapter.getInitialState({
 const commentSlice = createSlice({
   name: "comments",
   initialState,
-  reducers: {},
+  reducers: {
+    // setAllComments: commentsAdapter.setAll,
+    // setOneComments: commentsAdapter.removeOne,
+    // setManyComments: commentsAdapter.addMany,
+    // updateOneComment: commentsAdapter.updateOne,
+    // removeLikes(state) {
+    //   likesAdapter.removeAll(state.likes, {});
+    // },
+    // removeTagById(state, { payload: tagId }) {
+    //   const { commentId } = tagsAdapter
+    //     .getSelectors()
+    //     .selectById(state.tags, tagId);
+    //   const comment = commentsAdapter
+    //     .getSelectors()
+    //     .selectById(state, commentId);
+    //   commentsAdapter.updateOne(state, {
+    //     id: comment.id,
+    //     changes: {
+    //       ...comment,
+    //       tagsIds: comment.tagsIds.filter((id) => id !== tagId),
+    //     },
+    //   });
+    //   tagsAdapter.removeOne(state.tags, tagId);
+    // },
+  },
   extraReducers: {
     [fetchComments.pending](state) {
       state.loading = true;
@@ -70,8 +95,8 @@ const commentSlice = createSlice({
     [fetchComments.fulfilled](state, { payload }) {
       state.loading = false;
       commentsAdapter.setAll(state, payload.comments);
-      tagsAdapter.setAll(state.tags, payload.likes);
-      likesAdapter.setAll(state.likes, payload.tags);
+      tagsAdapter.setAll(state.tags, payload.tags);
+      likesAdapter.setAll(state.likes, payload.likes);
     },
     [fetchComments.rejected](state) {
       state.loading = false;
@@ -105,9 +130,12 @@ const commentSlice = createSlice({
   },
 });
 
-// normalized state
 export const commentSelectors = commentsAdapter.getSelectors(
   (state) => state.comments
+);
+
+export const likesSelectors = likesAdapter.getSelectors(
+  (state) => state.comments.likes
 );
 
 export const {} = commentSlice.actions;

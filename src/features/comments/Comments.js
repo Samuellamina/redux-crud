@@ -1,5 +1,6 @@
 import {
   commentSelectors,
+  likesSelectors,
   fetchComments,
   deleteComments,
   patchComments,
@@ -11,6 +12,7 @@ import Comment from "./components/Comment";
 const Comments = () => {
   const dispatch = useDispatch();
   const allComments = useSelector(commentSelectors.selectAll);
+  const allLikes = useSelector(likesSelectors.selectAll);
   // const total = useSelector(commentSelectors.selectTotal);
   //   const singleComment = useSelector((state) =>
   //     commentSelectors.selectById(state, 5)
@@ -25,6 +27,8 @@ const Comments = () => {
   useEffect(() => {
     dispatch(fetchComments());
   }, []);
+
+  console.log({ allLikes });
 
   return allComments.map(({ id, body }) => (
     <Comment
